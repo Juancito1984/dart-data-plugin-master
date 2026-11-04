@@ -7,8 +7,8 @@
     <!--    To prevent it from being legacy-->
     <depends>com.intellij.modules.lang</depends>
 
-    <!-- 2018.3 - Based on Jetbrain's compatibility verification -->
-    <idea-version since-build="183"/>
+    <!-- 2023.1 - Based on Jetbrain's compatibility verification -->
+    <idea-version since-build="231"/>
 
     <description><![CDATA[
         <p>Essential utility methods generator for Dart data classes (Custom Version by Ing. Juan Pablo Gosalvez with Null-Safety, String Interpolation, and Timestamp support).</p>

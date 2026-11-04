@@ -20,9 +20,6 @@ abstract class BaseAnAction : AnAction() {
         event.presentation.isEnabledAndVisible = event.isInDartFile()
     }
 
-    // Actions that change PSI elements should be
-    override fun startInTransaction(): Boolean = true
-
     final override fun actionPerformed(event: AnActionEvent) {
         val actionData = tryCreateActionData(event) ?: return
         val dartClass = tryExtractDartClassDefinition(actionData) ?: return
