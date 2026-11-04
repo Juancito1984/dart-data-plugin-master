@@ -1,5 +1,7 @@
 # Dart Data Class Plugin
 
+> **Note**: This is a customized fork ("Dart Data Section NyK") of the original [Dart Data Class Plugin](https://github.com/andrasferenczi/dart-data-plugin) created by **Andras Ferenczi**. Thank you, Andras, for your initiative in creating this wonderful tool! This fork includes modern Dart features such as enhanced Null-Safety, String Interpolation, and robust Timestamp/DateTime support.
+
 ![Usage](img/dart-data-usage.gif)
 
 This plugin is created for those who would like to have extra data manipulation methods in their data classes without having to write boilerplate code.
@@ -15,86 +17,77 @@ This plugin can generate the following code:
 
 ## Example
 
-Let's say you have a class called `Person` with the properties:
+Let's say you have a class called `LibroModel` with the properties:
 
 ```dart
-class Person {
-  final int id;
-  final String _firstName, _lastName;
-  final int age;
-  int? income;
-
-  String get name => _firstName + " " + _lastName;
+class LibroModel {
+  final String id;
+  final String titulo;
+  final int? anio;
+  final String autorId;
+  final DateTime create;
 }
 ```
 
 Using all generators of this plugin and selecting all properties, this class will look like the following. 
 
-*(Note that some features of this generation can be customized, see details below.)*
+*(Note that some features of this generation can be customized, see details below, and it includes robust parsing for dates like Firestore's Timestamp!)*
 
 
 ```dart
-class Person {
-  final int id;
-  final String _firstName, _lastName;
-  final int age;
-  int? income;
-
-  String get name => _firstName + " " + _lastName;
+class LibroModel {
+  final String id;
+  final String titulo;
+  final int? anio;
+  final String autorId;
+  final DateTime create;
 
 //<editor-fold desc="Data Methods">
-
-  Person({
+  const new({
     required this.id,
-    required this.age,
-    this.income,
-    required String firstName,
-    required String lastName,
-  })  : _firstName = firstName,
-        _lastName = lastName;
+    required this.titulo,
+    this.anio,
+    required this.autorId,
+    required this.create,
+  });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Person &&
+      (other is LibroModel &&
           runtimeType == other.runtimeType &&
           id == other.id &&
-          _firstName == other._firstName &&
-          _lastName == other._lastName &&
-          age == other.age &&
-          income == other.income);
+          titulo == other.titulo &&
+          anio == other.anio &&
+          autorId == other.autorId &&
+          create == other.create);
 
   @override
   int get hashCode =>
       id.hashCode ^
-      _firstName.hashCode ^
-      _lastName.hashCode ^
-      age.hashCode ^
-      income.hashCode;
+      titulo.hashCode ^
+      anio.hashCode ^
+      autorId.hashCode ^
+      create.hashCode;
 
   @override
   String toString() {
-    return 'Person{' +
-        ' id: $id,' +
-        ' _firstName: $_firstName,' +
-        ' _lastName: $_lastName,' +
-        ' age: $age,' +
-        ' income: $income,' +
-        '}';
+    return 'LibroModel{id: $id, titulo: $titulo, anio: $anio, autorId: $autorId, create: $create}';
   }
 
-  Person copyWith({
-    int? id,
-    String? firstName,
-    String? lastName,
-    int? age,
-    int? income,
+  LibroModel copyWith({
+    String? id,
+    String? titulo,
+    int? anio,
+    String? autorId,
+    DateTime? create,
   }) {
-    return Person(
+    return LibroModel(
       id: id ?? this.id,
-      firstName: firstName ?? this._firstName,
-      lastName: lastName ?? this._lastName,
-      age: age ?? this.age,
+      titulo: titulo ?? this.titulo,
+      anio: anio ?? this.anio,
+      autorId: autorId ?? this.autorId,
+      create: create ?? this.create,
       income: income ?? this.income,
     );
   }
@@ -104,18 +97,32 @@ class Person {
       'id': this.id,
       '_firstName': this._firstName,
       '_lastName': this._lastName,
-      'age': this.age,
-      'income': this.income,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'titulo': titulo,
+      'anio': anio,
+      'autorId': autorId,
+      'create': create,
     };
   }
 
-  factory Person.fromMap(Map<String, dynamic> map) {
-    return Person(
-      id: map['id'] as int,
-      firstName: map['_firstName'] as String,
-      lastName: map['_lastName'] as String,
-      age: map['age'] as int,
-      income: map['income'] as int?,
+  factory LibroModel.fromMap(Map<String, dynamic> map) {
+    return LibroModel(
+      id: map['id'] as String? ?? '',
+      titulo: map['titulo'] as String? ?? '',
+      anio: (map['anio'] as num?)?.toInt(),
+      autorId: map['autorId'] as String? ?? '',
+      create: map['create'] != null
+          ? (map['create'] is DateTime
+                ? map['create'] as DateTime
+                : (map['create'].runtimeType.toString() == 'Timestamp'
+                      ? (map['create'] as dynamic).toDate() as DateTime
+                      : DateTime.parse(map['create'].toString())))
+          : DateTime.now(),
     );
   }
 
