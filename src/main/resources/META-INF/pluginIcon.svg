@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0175C2" />
+      <stop offset="100%" stop-color="#133C55" />
+    </linearGradient>
+  </defs>
+  <!-- Background with rounded corners -->
+  <rect x="2" y="2" width="36" height="36" rx="8" fill="url(#bg)" />
+
+  <!-- Code Braces { } representing Data Classes -->
+  <path d="M14 12 C11 12 11 14 11 16 L11 18 C11 20 9 20 8 20 C9 20 11 20 11 22 L11 24 C11 26 11 28 14 28"
+        stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M26 12 C29 12 29 14 29 16 L29 18 C29 20 31 20 32 20 C31 20 29 20 29 22 L29 24 C29 26 29 28 26 28"
+        stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+  <!-- Center dot / generator indicator -->
+  <circle cx="20" cy="20" r="3" fill="#57B6FF" />
+</svg>
