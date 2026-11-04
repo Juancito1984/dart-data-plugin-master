@@ -17,15 +17,15 @@ This plugin can generate the following code:
 
 ## Example
 
-Let's say you have a class called `LibroModel` with the properties:
+Let's say you have a class called `Person` with the properties:
 
 ```dart
-class LibroModel {
+class Person {
   final String id;
-  final String titulo;
-  final int? anio;
-  final String autorId;
-  final DateTime create;
+  final String nombre;
+  final int? edad;
+  final String? direccion;
+  final DateTime fechaNacimiento;
 }
 ```
 
@@ -35,93 +35,84 @@ Using all generators of this plugin and selecting all properties, this class wil
 
 
 ```dart
-class LibroModel {
+class Person {
   final String id;
-  final String titulo;
-  final int? anio;
-  final String autorId;
-  final DateTime create;
+  final String nombre;
+  final int? edad;
+  final String? direccion;
+  final DateTime fechaNacimiento;
 
 //<editor-fold desc="Data Methods">
   const new({
     required this.id,
-    required this.titulo,
-    this.anio,
-    required this.autorId,
-    required this.create,
+    required this.nombre,
+    this.edad,
+    this.direccion,
+    required this.fechaNacimiento,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is LibroModel &&
+      (other is Person &&
           runtimeType == other.runtimeType &&
           id == other.id &&
-          titulo == other.titulo &&
-          anio == other.anio &&
-          autorId == other.autorId &&
-          create == other.create);
+          nombre == other.nombre &&
+          edad == other.edad &&
+          direccion == other.direccion &&
+          fechaNacimiento == other.fechaNacimiento);
 
   @override
   int get hashCode =>
       id.hashCode ^
-      titulo.hashCode ^
-      anio.hashCode ^
-      autorId.hashCode ^
-      create.hashCode;
+      nombre.hashCode ^
+      edad.hashCode ^
+      direccion.hashCode ^
+      fechaNacimiento.hashCode;
 
   @override
   String toString() {
-    return 'LibroModel{id: $id, titulo: $titulo, anio: $anio, autorId: $autorId, create: $create}';
+    return 'Person{id: $id, nombre: $nombre, edad: $edad, direccion: $direccion, fechaNacimiento: $fechaNacimiento}';
   }
 
-  LibroModel copyWith({
+  Person copyWith({
     String? id,
-    String? titulo,
-    int? anio,
-    String? autorId,
-    DateTime? create,
+    String? nombre,
+    int? edad,
+    String? direccion,
+    DateTime? fechaNacimiento,
   }) {
-    return LibroModel(
+    return Person(
       id: id ?? this.id,
-      titulo: titulo ?? this.titulo,
-      anio: anio ?? this.anio,
-      autorId: autorId ?? this.autorId,
-      create: create ?? this.create,
-      income: income ?? this.income,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': this.id,
-      '_firstName': this._firstName,
-      '_lastName': this._lastName,
+      nombre: nombre ?? this.nombre,
+      edad: edad ?? this.edad,
+      direccion: direccion ?? this.direccion,
+      fechaNacimiento: fechaNacimiento ?? this.fechaNacimiento,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'titulo': titulo,
-      'anio': anio,
-      'autorId': autorId,
-      'create': create,
+      'nombre': nombre,
+      'edad': edad,
+      'direccion': direccion,
+      'fechaNacimiento': fechaNacimiento,
     };
   }
 
-  factory LibroModel.fromMap(Map<String, dynamic> map) {
-    return LibroModel(
+  factory Person.fromMap(Map<String, dynamic> map) {
+    return Person(
       id: map['id'] as String? ?? '',
-      titulo: map['titulo'] as String? ?? '',
-      anio: (map['anio'] as num?)?.toInt(),
-      autorId: map['autorId'] as String? ?? '',
-      create: map['create'] != null
-          ? (map['create'] is DateTime
-                ? map['create'] as DateTime
-                : (map['create'].runtimeType.toString() == 'Timestamp'
-                      ? (map['create'] as dynamic).toDate() as DateTime
-                      : DateTime.parse(map['create'].toString())))
+      nombre: map['nombre'] as String? ?? '',
+      edad: (map['edad'] as num?)?.toInt(),
+      direccion: map['direccion'] as String?,
+      fechaNacimiento: map['fechaNacimiento'] != null
+          ? (map['fechaNacimiento'] is DateTime
+                ? map['fechaNacimiento'] as DateTime
+                : (map['fechaNacimiento'].runtimeType.toString() == 'Timestamp'
+                      ? (map['fechaNacimiento'] as dynamic).toDate() as DateTime
+                      : DateTime.parse(map['fechaNacimiento'].toString())))
           : DateTime.now(),
     );
   }
