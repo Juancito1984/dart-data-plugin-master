@@ -105,16 +105,16 @@ private fun DartVarDeclarationList.extractEntireDeclarations(): List<VariableDec
 
 private val privateToUniquePublicVariableNameTransformations = listOf<(variableName: String) -> String>(
     // Remove starting underscore and make it variable like
-    { it.substring(1).decapitalize() },
+    { it.substring(1).replaceFirstChar { char -> char.lowercase() } },
     // Private
-    { "p" + it.substring(1).capitalize() },
+    { "p" + it.substring(1).replaceFirstChar { char -> char.uppercase() } },
     // mVariable for the Android <3
-    { "m" + it.substring(1).capitalize() },
+    { "m" + it.substring(1).replaceFirstChar { char -> char.uppercase() } },
     // Unique
-    { "u" + it.substring(1).capitalize() },
-    { "p_" + it.substring(1).capitalize() },
-    { "m_" + it.substring(1).capitalize() },
-    { "u_" + it.substring(1).capitalize() }
+    { "u" + it.substring(1).replaceFirstChar { char -> char.uppercase() } },
+    { "p_" + it.substring(1).replaceFirstChar { char -> char.uppercase() } },
+    { "m_" + it.substring(1).replaceFirstChar { char -> char.uppercase() } },
+    { "u_" + it.substring(1).replaceFirstChar { char -> char.uppercase() } }
 )
 
 // Function keeps name if not private
