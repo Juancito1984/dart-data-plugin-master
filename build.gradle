@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '1.17.4'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.20'
+}
+
+group 'andrasferenczi'
+version '9.9.0'
+
+sourceCompatibility = 17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+intellij {
+    version = '2023.2.7'
+    plugins = ['Dart:232.10313']
+    pluginName = 'Dart Data Section NyK'
+    updateSinceUntilBuild = false
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "17"
+}
