@@ -1,0 +1,46 @@
+<idea-plugin>
+    <id>andrasferenczi.dart-data-plugin-custom</id>
+    <name>Dart Data Section NyK</name>
+    <vendor>Ing. Juan Pablo Gosalvez</vendor>
+
+    <depends>Dart</depends>
+    <!--    To prevent it from being legacy-->
+    <depends>com.intellij.modules.lang</depends>
+
+    <!-- 2018.3 - Based on Jetbrain's compatibility verification -->
+    <idea-version since-build="183"/>
+
+    <description><![CDATA[
+        <p>Essential utility methods generator for Dart data classes (Custom Version by Ing. Juan Pablo Gosalvez with Null-Safety, String Interpolation, and Timestamp support).</p>
+    ]]></description>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable
+                groupId="editor"
+                instance="andrasferenczi.configuration.DataClassConfigurable"
+        />
+    </extensions>
+
+    <actions>
+        <action id="andrasferenczi.action.NamedArgumentConstructorAction"
+                class="andrasferenczi.action.NamedArgumentConstructorAction"
+                text="Named Argument Constructor">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+        <action id="andrasferenczi.action.DartCopyWithAction"
+                class="andrasferenczi.action.DartCopyWithAction"
+                text="Copy">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+        <action id="andrasferenczi.action.MapAction"
+                class="andrasferenczi.action.MapAction"
+                text="toMap() and fromMap()">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+        <action id="andrasferenczi.action.FullDataAction"
+                class="andrasferenczi.action.FullDataAction"
+                text="Dart Data Section NyK">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
