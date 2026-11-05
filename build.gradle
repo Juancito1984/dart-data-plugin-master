@@ -1,32 +1,50 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '1.17.4'
-    id 'org.jetbrains.kotlin.jvm' version '1.9.20'
+    id 'org.jetbrains.kotlin.jvm' version '2.1.0'
+    id 'org.jetbrains.intellij.platform' version '2.2.1'
 }
 
 group 'com.nyk'
 version '1.0.1'
 
-sourceCompatibility = 17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
+    intellijPlatform {
+        create('IC', '2023.2.7')
+        bundledPlugin('com.intellij.java')
+        plugin('Dart', '232.10313')
+    }
 }
 
-intellij {
-    version = '2023.2.7'
-    plugins = ['Dart:232.10313']
-    pluginName = 'Dart Data Section NyK'
-    updateSinceUntilBuild = false
+intellijPlatform {
+    pluginConfiguration {
+        name = 'Dart Data Section NyK'
+        ideaVersion {
+            sinceBuild = '231'
+            untilBuild = provider { null }
+        }
+    }
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "17"
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "17"
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
