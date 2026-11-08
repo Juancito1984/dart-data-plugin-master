@@ -16,10 +16,13 @@ import com.nyk.templater.AliasedVariableTemplateParamImpl
 import com.nyk.templater.CopyWithTemplateParams
 import com.nyk.templater.createCopyWithConstructorTemplate
 import com.intellij.codeInsight.template.TemplateManager
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.jetbrains.lang.dart.psi.DartClassDefinition
 
 class DartCopyWithAction : BaseAnAction() {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun processAction(
         event: AnActionEvent,

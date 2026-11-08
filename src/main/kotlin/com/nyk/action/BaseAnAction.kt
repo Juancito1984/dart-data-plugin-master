@@ -9,6 +9,7 @@ import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.PsiDocumentManager
 import com.jetbrains.lang.dart.psi.DartClassDefinition
 
@@ -34,7 +35,7 @@ abstract class BaseAnAction : AnAction() {
 
         val templateManager = TemplateManager.getInstance(project)
 
-        project.runWriteAction {
+        WriteCommandAction.runWriteCommandAction(project) {
             performAction.deleteAction?.let {
                 it.invoke()
 

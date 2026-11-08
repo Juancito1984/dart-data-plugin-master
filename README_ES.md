@@ -1,23 +1,29 @@
 # Dart Data Section NyK
 
-> **Nota**: Este es un fork personalizado ("Dart Data Section NyK") del [Dart Data Class Plugin](https://github.com/andrasferenczi/dart-data-plugin) original creado por **Andras Ferenczi**. ¡Muchas gracias a Andras por su iniciativa al crear esta maravillosa herramienta! Esta versión personalizada incluye características modernas de Dart como Null-Safety mejorado, interpolación de cadenas y soporte robusto para Timestamp/DateTime.
+> **Nota**: Este es un fork personalizado ("Dart Data Section NyK") del [Dart Data Class Plugin](https://github.com/andrasferenczi/dart-data-plugin) original creado por **Andras Ferenczi**. ¡Muchas gracias a Andras por su iniciativa al crear esta maravillosa herramienta! Esta versión personalizada, mantenida por el **Ing. Juan Pablo Gosalvez**, incluye características modernas de Dart como Null-Safety robusto, interpolación de cadenas, manejo avanzado de `Timestamp` (Firestore) y compatibilidad total con las plataformas más recientes de Android Studio e IntelliJ.
 
 ![Uso](img/dart-data-usage.gif)
 
-Este plugin está diseñado para aquellos desarrolladores que desean generar métodos adicionales de manipulación de datos en sus clases de Dart sin tener que escribir código repetitivo (boilerplate).
+Este plugin está diseñado para desarrolladores que desean generar métodos adicionales de manipulación de datos en sus clases de Dart sin tener que escribir código repetitivo (boilerplate).
 
 ![Captura de pantalla](img/generate-menu.png)
 
-Este plugin puede generar el siguiente código:
-- Constructor con argumentos nombrados (*Named Argument Constructor*)
-- `copyWith`: copia la instancia sobrescribiendo los parámetros proporcionados.
-- `toMap`: convierte tu clase en un `Map<String, dynamic>`.
-- `fromMap`: construye tu clase a partir de un `Map<String, dynamic>` utilizando el constructor con argumentos nombrados.
-- Todo lo anterior combinado con `toString`, `equals` (operador `==`) y `hashCode`.
+## Características Principales
 
-## Ejemplo
+Este plugin genera de forma automática:
+- **Constructor con argumentos nombrados (*Named Argument Constructor*):** Con soporte para `required`, valores por defecto, constructor `const` y Null-Safety.
+- **`copyWith`:** Copia la instancia sobrescribiendo únicamente los parámetros seleccionados, con soporte de inmutabilidad y reutilización opcional de la misma instancia.
+- **`toMap`:** Serializa tu clase a una estructura de tipo `Map<String, dynamic>`.
+- **`fromMap`:** Reconstruye la clase desde un `Map<String, dynamic>` utilizando el constructor con argumentos nombrados y validación segura de tipos (incluyendo `DateTime` y `Timestamp`).
+- **`toString`:** Representación legible en texto con interpolación moderna de cadenas Dart.
+- **`equals` (`operator ==`) y `hashCode`:** Comparación por valor de propiedades.
+- **Sección consolidada "Dart Data Section NyK":** Agrupa todas las funciones anteriores dentro de un bloque colapsable `<editor-fold desc="Data Methods">`.
 
-Supongamos que tienes una clase llamada `Person` con las siguientes propiedades:
+---
+
+## Ejemplo Completo
+
+Dada una clase Dart con propiedades con diferentes tipos y nulabilidad:
 
 ```dart
 class Person {
@@ -29,9 +35,7 @@ class Person {
 }
 ```
 
-Al utilizar todos los generadores de este plugin y seleccionar todas las propiedades, la clase resultante se verá de la siguiente manera:
-
-*(¡Nota que algunas características se pueden personalizar, ver detalles más abajo, e incluye un análisis robusto para fechas como el Timestamp de Firestore!)*
+Al invocar la acción **Dart Data Section NyK** (`Alt + Insert` o menú contextual `Generate...` > `Dart Data Section NyK`) y seleccionar todas las propiedades, se genera el siguiente código limpio y estructurado:
 
 ```dart
 class Person {
@@ -120,23 +124,53 @@ class Person {
 }
 ```
 
+---
+
 ## Configuración
 
 ![Configuración](img/settings-menu.png)
 
-Puedes encontrar configuraciones adicionales en `Settings` > `Editor` > `Dart Data Class Plugin` donde tienes las siguientes opciones de personalización:
+El plugin ofrece configuraciones avanzadas accesibles en **Settings / Preferences** > **Editor** > **Dart Data Class Plugin**:
 
-- Establecer el nombre del método de copia (*copy method*).
-- Usar la anotación `@required`.
-- Usar la palabra clave `new` al instanciar.
-- Usar la palabra clave `const` para la generación del constructor (todos los campos de la clase deben ser `final`).
-- Configurar la función de copia para retornar la misma instancia (útil cuando se usa Dart en una arquitectura Redux).
-- Mapeador de claves para `toMap` y `fromMap`: aplica tu propia lógica para transformar las claves a sus valores originales.
+- **Nombre del método de copia:** Personaliza el identificador (por defecto `copyWith`).
+- **Uso de `@required`:** Habilitar/deshabilitar la anotación `@required` (en proyectos sin Null-Safety o con versiones legacy).
+- **Palabra clave `new`:** Habilitar o desactivar el prefijo `new` en instanciaciones.
+- **Palabra clave `const`:** Generar constructores `const` automáticamente cuando todos los miembros de la clase sean `final`.
+- **Optimización de copia:** Si todos los campos son inmutables y no se pasa ningún argumento a `copyWith`, reutilizar la instancia existente.
+- **Mapeador de claves para `toMap` y `fromMap`:** Permite aplicar lógica personalizada de mapeo de nombres de propiedades.
 
-## Bajo el capó
+---
 
-Este proyecto está construido en Kotlin y hace uso de los elementos PSI de IntelliJ para extraer la estructura del archivo Dart seleccionado.
+## Arquitectura y Compatibilidad Técnica
 
-## Problemas conocidos
+- **Entorno de ejecución:** Compatible con **Android Studio 2024.1 (Koala)** hasta **Build 262+** (y versiones futuras con JBR OpenJDK 25 en Windows).
+- **Gradle:** Construido sobre **Gradle 9.9.0** con **Kotlin 2.1.20**.
+- **Compatibilidad JVM:** Código objetivo compilado para **Java 17** (`jvmTarget = 17`).
+- **Threading Seguro:** Acciones auditadas e integradas bajo el hilo en segundo plano de la plataforma (`ActionUpdateThread.BGT`) para garantizar que la interfaz de usuario no sufra bloqueos (sin congelamiento del EDT).
+- **Acceso a Escritura Seguro:** Uso de `WriteCommandAction.runWriteCommandAction` para asegurar la transaccionalidad y soporte completo de deshacer/rehacer (`Undo/Redo`).
 
-- Si la clase termina con un comentario de una sola línea, el código puede generarse desde una ubicación no válida.
+---
+
+## Compilación y Pruebas
+
+Para compilar el plugin y ejecutar la suite de pruebas unitarias:
+
+```bash
+# Ejecutar pruebas unitarias
+./gradlew test
+
+# Compilar y empaquetar el plugin limpio
+./gradlew clean buildPlugin
+```
+
+El artefacto final empaquetado se encontrará en:
+```
+build/distributions/dart-data-plugin-1.0.1.zip
+```
+
+---
+
+## 📖 Arquitectura y Guía para Desarrolladores
+
+Para conocer los detalles internos sobre el ciclo de vida de las acciones, el árbol PSI de Dart, los hilos de ejecución en segundo plano (`ActionUpdateThread.BGT`) y las plantillas de generación de código, consulta la [Guía Técnica de Arquitectura](docs/ARCHITECTURE.md).
+

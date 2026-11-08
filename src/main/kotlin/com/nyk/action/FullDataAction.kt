@@ -19,11 +19,14 @@ import com.nyk.templater.TemplateType
 import com.nyk.traversal.TraversalType
 import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.TemplateManager
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.psi.PsiComment
 import com.jetbrains.lang.dart.psi.DartClassDefinition
 
 class FullDataAction : BaseAnAction() {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun processAction(
         event: AnActionEvent,

@@ -69,6 +69,13 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+.idea/caches/
+.idea/**/caches/
+
+# Local properties and platform SDK artifacts
+local.properties
+.intellijPlatform/
+.kotlin/
 
 # JetBrains templates
 **___jb_tmp___

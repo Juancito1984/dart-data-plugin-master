@@ -10,10 +10,13 @@ import com.nyk.declaration.*
 import com.nyk.ext.psi.extractClassName
 import com.nyk.templater.*
 import com.intellij.codeInsight.template.TemplateManager
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.jetbrains.lang.dart.psi.DartClassDefinition
 
 class NamedArgumentConstructorAction : BaseAnAction() {
+
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun processAction(
         event: AnActionEvent,

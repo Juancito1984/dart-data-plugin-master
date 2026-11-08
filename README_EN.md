@@ -1,23 +1,29 @@
 # Dart Data Section NyK
 
-> **Note**: This is a customized fork ("Dart Data Section NyK") of the original [Dart Data Class Plugin](https://github.com/andrasferenczi/dart-data-plugin) created by **Andras Ferenczi**. Thank you, Andras, for your initiative in creating this wonderful tool! This fork includes modern Dart features such as enhanced Null-Safety, String Interpolation, and robust Timestamp/DateTime support.
+> **Note**: This is a customized fork ("Dart Data Section NyK") of the original [Dart Data Class Plugin](https://github.com/andrasferenczi/dart-data-plugin) created by **Andras Ferenczi**. Thank you, Andras, for your initiative in creating this wonderful tool! This customized version, maintained by **Ing. Juan Pablo Gosalvez**, includes modern Dart features such as enhanced Null-Safety, string interpolation, robust Firestore `Timestamp`/`DateTime` parsing, and full compatibility with recent Android Studio and IntelliJ releases.
 
 ![Usage](img/dart-data-usage.gif)
 
-This plugin is created for those who would like to have extra data manipulation methods in their data classes without having to write boilerplate code.
+This plugin is created for developers who want to generate additional data manipulation methods in their Dart classes without writing repetitive boilerplate code.
 
 ![ScreenShot](img/generate-menu.png)
 
-This plugin can generate the following code:
-- Named Argument Constructor
-- `copyWith`: copies the instance and overrides the given parameters
-- `toMap`: converts your class into a map of `Map<String, dynamic>`
-- `fromMap`: constructs your class from a `Map<String, dynamic>` using the named argument constructor
-- All of the above with `toString`, `equals` (`==` operator), `hashcode`
+## Key Features
 
-## Example
+This plugin automatically generates:
+- **Named Argument Constructor:** With support for `required`, default values, `const` constructor, and Null-Safety.
+- **`copyWith`:** Copies the instance overriding only specified arguments, with immutable instance reuse optimization.
+- **`toMap`:** Serializes your class into a `Map<String, dynamic>`.
+- **`fromMap`:** Reconstructs your class from a `Map<String, dynamic>` using named arguments and robust type handling (including `DateTime` and Firestore `Timestamp`).
+- **`toString`:** Human-readable output with modern Dart string interpolation.
+- **`equals` (`operator ==`) and `hashCode`:** Accurate property value comparison.
+- **Consolidated "Dart Data Section NyK":** Groups all aforementioned methods inside a collapsible `<editor-fold desc="Data Methods">` block.
 
-Let's say you have a class called `Person` with the properties:
+---
+
+## Complete Example
+
+Given a Dart class with properties of varying types and nullability:
 
 ```dart
 class Person {
@@ -29,10 +35,7 @@ class Person {
 }
 ```
 
-Using all generators of this plugin and selecting all properties, this class will look like the following. 
-
-*(Note that some features of this generation can be customized, see details below, and it includes robust parsing for dates like Firestore's Timestamp!)*
-
+Triggering the **Dart Data Section NyK** action (`Alt + Insert` or context menu `Generate...` > `Dart Data Section NyK`) and selecting all fields generates the following clean code:
 
 ```dart
 class Person {
@@ -121,23 +124,53 @@ class Person {
 }
 ```
 
+---
+
 ## Settings
 
 ![ScreenShot](img/settings-menu.png)
 
-You can find additional settings under `Settings` > `Editor` > `Dart Data Class Plugin` where you have the following customization options:
+You can find advanced settings under **Settings / Preferences** > **Editor** > **Dart Data Class Plugin**:
 
-- Set the name of the copy method
-- Use `@required` annotation
-- Use `new` keyword when instantiation
-- Use the `const` keyword for the constructor generation - all fields in the class have to be final
-- Copy function can be specified to return the same instance. This option has the same requirement as the const keyword. Useful when using Dart in a Redux architecture.
-- Key mapper for `toMap` and `fromMap` - use your own logic to transform the keys to their original values - useful when database result returns prefixed or uppercased result.
+- **Copy method name:** Customize the method identifier (defaults to `copyWith`).
+- **Use `@required`:** Enable/disable the `@required` annotation.
+- **Use `new` keyword:** Toggle the `new` keyword on instantiations.
+- **Use `const` keyword:** Automatically generate `const` constructors when all class fields are `final`.
+- **Optimized copy function:** Return the same instance when no parameters are changed on immutable classes.
+- **Key mapper for `toMap` and `fromMap`:** Configure custom naming transform logic.
 
-## Under the Hood
+---
 
-This project is built using Kotlin and makes use of IntelliJ's PSI elements for extracting the structure of the Dart file of your selection.
+## Architecture & Technical Compatibility
 
-## Known Issues
+- **Runtime Environment:** Compatible with **Android Studio 2024.1 (Koala)** through **Build 262+** (and future builds with JBR OpenJDK 25 on Windows).
+- **Build System:** **Gradle 9.9.0** with **Kotlin 2.1.20**.
+- **JVM Target:** Java 17 bytecode compatibility (`jvmTarget = 17`).
+- **Safe Threading:** All actions explicitly execute on the platform's background thread (`ActionUpdateThread.BGT`) to eliminate EDT freezes.
+- **Transactional Writes:** Safe modification of documents wrapped in `WriteCommandAction.runWriteCommandAction` with full undo/redo history preservation.
 
-- If the class ends with a single-line comment, code is generated from an invalid location.
+---
+
+## Build & Testing
+
+To run the unit tests and package the distribution:
+
+```bash
+# Execute unit tests
+./gradlew test
+
+# Clean compile and build distribution artifact
+./gradlew clean buildPlugin
+```
+
+The packaged distribution file will be available at:
+```
+build/distributions/dart-data-plugin-1.0.1.zip
+```
+
+---
+
+## 📖 Architecture & Developer Guide
+
+For in-depth details about the internal action lifecycle, Dart PSI syntax trees, background execution threading (`ActionUpdateThread.BGT`), and code generation templates, refer to the [Technical Architecture Guide](docs/ARCHITECTURE.md).
+
